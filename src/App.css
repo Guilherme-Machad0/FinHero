@@ -1,0 +1,404 @@
+/* src/App.css ou src/index.css */
+
+/* Definição de Cores - Baseado na Imagem */
+:root {
+    --finhero-blue: #1A1A2E; /* Cor de fundo principal */
+    --finhero-dark-green: #28A745; /* Botões, textos destacados */
+    --finhero-light-green: #4CAF50;
+    --finhero-text-dark: #333;
+    --finhero-text-light: #E0E0E0;
+    --finhero-red-mascot: #DC3545; /* Vermelho do mascote */
+    --finhero-input-bg: rgba(255, 255, 255, 0.1); /* Fundo dos inputs */
+    --finhero-input-border: rgba(255, 255, 255, 0.3);
+    --finhero-gold: #FFD700; /* Cor das moedas */
+    --finhero-text-faded: #AAAAAA; /* Texto mais apagado */
+}
+
+/* Estilos Globais do Body (background principal, fonte) */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif; /* Use uma fonte mais próxima do Segoe UI se tiver */
+    background-color: var(--finhero-blue);
+    color: var(--finhero-text-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ocupa a altura total da viewport */
+    overflow: hidden; /* Evita scroll indesejado */
+    position: relative; /* Para posicionamento absoluto de elementos de fundo */
+}
+
+/* Container da Página de Login (Centraliza o conteúdo principal) */
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    max-width: 650px; /* Largura máxima para centralizar o conteúdo */
+    width: 100%; /* Garante que ocupe a largura disponível */
+    box-sizing: border-box; /* Inclui padding na largura total */
+    z-index: 1; /* Para ficar acima do padrão de moedas */
+    position: relative;
+    text-align: center; /* Centraliza o texto dentro da página */
+}
+
+/* Seção do Logo (FinHero e Mascotes) */
+.logo-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px; /* Espaçamento entre os elementos */
+}
+
+.mascot-left, .mascot-right {
+    width: 60px; /* Tamanho dos mascotes */
+    height: auto;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); /* Pequena sombra para destacá-los */
+}
+
+.mascot-left {
+    content: url('/src/assets/redevil-finhero.png'); /* Substitua pelo caminho real do seu goblin verde */
+}
+.mascot-right {
+    content: url('/src/assets/greendevil-finhero.png'); /* Substitua pelo caminho real do seu diabinho vermelho */
+}
+
+.logo-text {
+    font-size: 3.5rem; /* Tamanho grande para "FINHERO" */
+    font-weight: bold;
+    color: var(--finhero-dark-green); /* Verde brilhante */
+    text-shadow: 0 0 15px rgba(40, 167, 69, 0.6); /* Efeito neon verde */
+    letter-spacing: 2px;
+    margin: 0;
+}
+
+/* Slogan e Tagline */
+.slogan {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--finhero-dark-green);
+    margin-bottom: 10px;
+}
+
+.tagline {
+    font-size: 1.1rem;
+    color: var(--finhero-text-faded);
+    margin-bottom: 30px;
+}
+
+/* Título do Formulário */
+.form-title {
+    font-size: 1.8rem;
+    color: var(--finhero-dark-green);
+    margin-bottom: 25px;
+}
+
+/* Mensagem de Erro */
+.error-message {
+    color: var(--finhero-red-mascot);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+/* Campos de Input */
+.input-field {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px; /* Espaçamento entre os inputs */
+    background-color: var(--finhero-input-bg);
+    border: 1px solid var(--finhero-input-border);
+    border-radius: 8px;
+    color: var(--finhero-text-light);
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.input-field:focus {
+    border-color: var(--finhero-dark-green);
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+    outline: none;
+}
+
+/* Link Esqueceu a Senha */
+.forgot-password {
+    font-size: 0.9rem;
+    text-align: right;
+    margin-top: -10px; /* Ajusta para perto do input */
+    margin-bottom: 25px;
+
+}
+.forgot-password a {
+    color: var(--finhero-dark-green);
+    text-decoration: none;
+    font-weight: bold;
+}
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* Botão START */
+.login-button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--finhero-dark-green);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+}
+
+.login-button:hover {
+    background-color: var(--finhero-light-green);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
+}
+
+.login-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
+}
+
+/* Texto e Link de Cadastro */
+.signup-text {
+    margin-top: 30px;
+    font-size: 1rem;
+    color: var(--finhero-text-faded);
+}
+.signup-link {
+    color: var(--finhero-dark-green);
+    text-decoration: none;
+    font-weight: bold;
+}
+.signup-link:hover {
+    text-decoration: underline;
+}
+
+/* Efeito de Moedas no Rodapé */
+.coin-pattern {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* Altura da "pilha" de moedas */
+    overflow: hidden;
+    z-index: 0; /* Fica abaixo do conteúdo do login */
+    pointer-events: none; /* Não interfere com cliques */
+}
+
+.coin-pattern::before {
+    content: '';
+    position: absolute;
+    top: -20px; /* Ajusta a posição vertical das moedas */
+    left: 0;
+    width: 100%;
+    height: 100px; /* Altura da área de onde as moedas "saem" */
+    background: 
+        radial-gradient(circle at 10% 80%, var(--finhero-gold) 10px, transparent 11px),
+        radial-gradient(circle at 25% 70%, var(--finhero-gold) 12px, transparent 13px),
+        radial-gradient(circle at 40% 90%, var(--finhero-gold) 11px, transparent 12px),
+        radial-gradient(circle at 55% 75%, var(--finhero-gold) 13px, transparent 14px),
+        radial-gradient(circle at 70% 85%, var(--finhero-gold) 10px, transparent 11px),
+        radial-gradient(circle at 85% 65%, var(--finhero-gold) 12px, transparent 13px);
+    background-size: 150px 100px; /* Ajusta o tamanho da repetição para espalhar as moedas */
+    background-repeat: repeat-x;
+    animation: coinMove 30s linear infinite; /* Animação de movimento lateral */
+    filter: drop-shadow(0 -2px 5px rgba(0,0,0,0.5)); /* Sombra para as moedas */
+}
+
+/* Animação para o movimento das moedas */
+@keyframes coinMove {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-150px); } /* Move a "onda" de moedas */
+}
+
+/* ========================================================= */
+/* --- Variáveis de Tema (Mantenha ou defina se não existir) --- */
+/* ========================================================= */
+:root {
+  --finhero-dark-bg: #1A1A2E; 
+  --finhero-dark-green: #28A745; 
+  --finhero-text-light: #F0F0F0;
+  --finhero-text-faded: #AAAAAA;
+  --finhero-input-bg: #FFFFFF; /* Inputs brancos */
+  --finhero-input-border: #E0E0E0;
+  --finhero-gold: #FFD700;
+}
+
+/* Base Body Style */
+body {
+  margin: 0;
+  background-color: var(--finhero-dark-bg);
+  color: var(--finhero-text-light);
+  font-family: 'Arial', sans-serif; 
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* ========================================================= */
+/* --- Layout Comum (Container) --- */
+/* ========================================================= */
+
+.auth-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px; /* Mais largo que o login para caber os 2 inputs */
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 10;
+  text-align: center;
+}
+
+/* ========================================================= */
+/* --- Estilos da Página de Cadastro (Signup) --- */
+/* ========================================================= */
+
+.signup-logo-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 15px; /* Espaço entre o texto e o mascote */
+}
+
+.signup-logo-text {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--finhero-text-light); /* FINHERO em branco/claro */
+  margin: 0;
+}
+
+.signup-mascot {
+  width: 70px; /* Tamanho do goblin */
+  height: auto;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}
+
+.signup-slogan {
+  font-size: 1.5rem;
+  font-weight: normal; /* A imagem tem um peso de fonte mais suave */
+  color: var(--finhero-text-light);
+  margin: 0 0 35px 0;
+  line-height: 1.3;
+}
+
+.signup-form-title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--finhero-dark-green);
+  margin-bottom: 25px;
+}
+
+/* Estilo para inputs na mesma linha */
+.signup-input-row {
+  display: flex;
+  gap: 10px; /* Espaço entre Nome e E-mail */
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+/* Inputs de Nome e E-mail (na linha) */
+.signup-input-field {
+  flex: 1; /* Ocupa metade do espaço disponível */
+  padding: 12px 15px;
+  background-color: var(--finhero-input-bg);
+  border: 1px solid var(--finhero-input-border);
+  border-radius: 6px;
+  color: #333; /* Texto dentro do input escuro */
+  font-size: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+/* Input de Senha (largura total) */
+.signup-input-full-width {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: var(--finhero-input-bg);
+  border: 1px solid var(--finhero-input-border);
+  border-radius: 6px;
+  color: #333;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+
+/* BOTÃO START */
+.signup-button {
+  width: 100%;
+  padding: 15px;
+  background-color: var(--finhero-dark-green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+}
+.signup-button:hover {
+  background-color: #4CAF50;
+}
+
+/* EFEITO DE MOEDAS (Comum) */
+.coin-pattern {
+  /* ... (Mantenha o estilo das moedas de outras respostas) ... */
+  position: absolute;
+  bottom: 0;
+  /* ... */
+}
+
+/* ========================================================= */
+/* --- MEDIA QUERIES (Responsividade) --- */
+/* ========================================================= */
+
+@media (max-width: 550px) {
+  .auth-container {
+      max-width: 100%;
+  }
+  
+  .signup-logo-text {
+      font-size: 2.5rem;
+  }
+  
+  .signup-mascot {
+      width: 55px;
+  }
+
+  .signup-slogan {
+      font-size: 1.2rem;
+  }
+  
+  /* Para telas muito pequenas, empilha os inputs de Nome e E-mail */
+  .signup-input-row {
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 0;
+  }
+  
+  .signup-input-field {
+      margin-bottom: 10px;
+  }
+}
