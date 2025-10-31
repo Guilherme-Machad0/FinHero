@@ -2,7 +2,7 @@
 
 import React, { useState, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import GoblinMascote from '../assets/greendevil-finhero.png'; // Importe seu mascote verde
+import GoblinMascote from '../assets/greendevil-finhero.png'; // Verifique o nome do arquivo
 
 interface SignupProps {
     onSignupSuccess: () => void;
@@ -19,7 +19,6 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
         event.preventDefault();
         setError('');
         
-        // Simulação de autenticação
         if (password.length < 6) {
              setError("A senha deve ter pelo menos 6 caracteres.");
              return;
@@ -31,15 +30,14 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
     };
 
     return (
-        // Usando a classe principal para fundo e centralização
+        // ⬅️ Este é o bloco principal. Deve haver SOMENTE UMA ocorrência de FINHERO aqui.
         <div className="auth-page"> 
             
             <div className="auth-container">
                 
-                {/* LOGO E MASCOTE */}
+                {/* LOGO E MASCOTE (PRIMEIRA E ÚNICA OCORRÊNCIA) */}
                 <div className="signup-logo-section">
                     <h1 className="signup-logo-text">FINHERO</h1>
-                    {/* Se o caminho estiver correto, a imagem será carregada */}
                     <img src={GoblinMascote} alt="Mascote FinHero" className="signup-mascot" />
                 </div>
 
@@ -50,9 +48,9 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
                 <h2 className="signup-form-title">Crie sua conta</h2>
 
                 <form onSubmit={handleSubmit}>
-                    {/* Mensagem de Erro (o estilo da classe 'error-message' virá do App.css) */}
                     {error && <p className="error-message">{error}</p>}
 
+                    {/* Linha para Nome e E-mail */}
                     <div className="signup-input-row">
                         <input
                             type="text"
@@ -72,7 +70,7 @@ const Signup: React.FC<SignupProps> = ({ onSignupSuccess }) => {
                         />
                     </div>
                     
-                    {/* Senha (Último input que cobre a largura total) */}
+                    {/* Input de Senha (largura total) */}
                     <input
                         type="password"
                         placeholder="Digite sua senha"

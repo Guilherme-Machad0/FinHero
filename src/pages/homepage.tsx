@@ -1,69 +1,144 @@
 // src/pages/homepage.tsx
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import '../app.css'
-// Usamos <Link> do React Router para navegação
+import { useLocation } from 'react-router-dom';
+import Sidebar from '../components/ui/sidebar.tsx';
+// 1. Importa a interface de transação
+import { TransactionForm } from './adicionar.tsx'; 
 
-// 💡 Dica: Para sair da sessão, o link "Sair" deve chamar uma função que mude
-// o estado 'isLoggedIn' para false no App.tsx e redirecione para '/login'.
-interface HomepageProps {
-    onLogout?: () => void; // Prop opcional para lidar com o logout
+// 2. Define a estrutura da Transação Completa
+interface Transaction extends TransactionForm {
+    id: string; 
 }
 
-// O componente Dashboard/Homepage
-const Homepage: React.FC<HomepageProps> = ({ onLogout }) => {
+// 3. Atualiza as props para incluir a lista de transações
+interface HomepageProps {
+    onLogout: () => void;
+    transactions: Transaction[]; // ⬅️ Recebe o array de transações
+}
+
+// 4. Componente Card de Transação (para garantir a listagem)
+interface TransactionCardProps {
+    title: string;
+    category: string;
+    amount: number;
+    type: 'income' | 'expense';
+    date: string; // YYYY-MM-DD
+}
+
+const TransactionCard: React.FC<TransactionCardProps> = ({ title, category, amount, type, date }) => {
+    const formattedAmount = new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    }).format(amount);
+
+    const [year, month, day] = date.split('-');
+    const formattedDate = `${day}/${month}`;
     
-    // Você pode usar o React Router para gerenciar o estado 'active' do menu.
-    // Por enquanto, o 'Home' está marcado como ativo de forma estática.
-    
-    // 💡 Estrutura: Traduzimos o HTML para JSX, usando 'className'
+    const colorClass = type === 'income' ? 'income-color' : 'expense-color';
+    const sign = type === 'income' ? '+' : '-';
+
     return (
-        <div className="dashboard-container">
+        <div className="transaction-card">
+            <div className="transaction-details">
+                <span className="transaction-title">{title}</span>
+                <span className="transaction-category">{category}</span>
+            </div>
+            <div className="transaction-amount-info">
+                <span className={`transaction-amount ${colorClass}`}>
+                    {sign} {formattedAmount}
+                </span>
+                <span className="transaction-date">{formattedDate}</span>
+            </div>
+        </div>
+    );
+};
 
-            {/* --- 1. SIDEBAR (Barra Lateral) --- */}
-            <aside className="sidebar">
-                <div className="logo">FinHero</div>
-                <nav className="main-nav">
-                    <ul>
-                        <li><Link to="/home" className="active">Home</Link></li>
-                        <li><Link to="/perfil">Perfil</Link></li>
-                        <li><Link to="/adicionar">Adicionar</Link></li>
-                        <li>
-                            <a 
-                                href="#" // Mantemos o '#' para evitar recarregar
-                                onClick={onLogout} // Chama a função de logout passada pelo App.tsx
-                            >
-                                Sair
-                            </a>
-                        </li>
-                        
-                        <li><Link to="/ajuda">Ajuda</Link></li>
-                    </ul>
-                </nav>
-            </aside>
+// 5. Componente Principal (Dashboard)
+const Homepage: React.FC<HomepageProps> = ({ onLogout, transactions }) => {
+    const location = useLocation();
+    const currentPath = location.pathname;
+    const userName = "Guilherme";
 
-            {/* --- 2. CONTEÚDO PRINCIPAL (Main Content) --- */}
+    // CÁLCULOS DINÂMICOS
+    const totalIncome = transactions
+        .filter(tx => tx.type === 'income')
+        .reduce((sum, tx) => sum + tx.amount, 0);
+
+    const totalExpense = transactions
+        .filter(tx => tx.type === 'expense')
+        .reduce((sum, tx) => sum + tx.amount, 0);
+
+    const currentBalance = totalIncome - totalExpense;
+
+    const formatCurrency = (value: number) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+
+
+    return (
+        <div className="app-layout"> 
+            
+            <Sidebar onLogout={onLogout} activePath={currentPath} />
+
             <main className="main-content">
                 
-                {/* Cabeçalho do Conteúdo */}
+                {/* Cabeçalho */}
                 <header className="content-header">
-                    <div className="user-info">
-                        <h2>Olá, Guilherme</h2> {/* Você pode substituir por {userName} no futuro */}
-                        <p>Veja seu resumo de hoje.</p>
-                    </div>
-                </header>
-
-                {/* Área Onde os Cards e Gráficos Irão */}
-                <section className="content-area">
-                    {/* Placeholder: Aqui você irá adicionar os componentes de cards e gráficos */}
-                    <p style={{ color: '#9E9E9E' }}>
-                        Área de Conteúdo (Content Area). Comece a adicionar seus Cards aqui!
+                    <h2 className="user-greeting">
+                        Olá, <span className="highlight-name">{userName}</span>!
+                    </h2>
+                    <p className="summary-text">
+                        Seu resumo financeiro e últimas movimentações.
                     </p>
-                </section>
+                </header>
                 
-            </main>
+                {/* Área de Cards/Widgets (Usando Grid) */}
+                <section className="dashboard-widgets-area">
+                    
+                    {/* CARD DE STATUS FINANCEIRO (AGORA DINÂMICO) */}
+                    <div className="status-card">
+                        <h3>Status Financeiro</h3>
+                        <div className="status-detail">
+                            <p>Saldo Atual:</p>
+                            <span className="saldo-value">{formatCurrency(currentBalance)}</span>
+                        </div>
+                        <div className="status-detail">
+                            <p>Receitas Totais:</p>
+                            <span className="saldo-value">+ {formatCurrency(totalIncome)}</span>
+                        </div>
+                        <div className="status-detail">
+                            <p>Despesas Totais:</p>
+                            <span className="xp-value">- {formatCurrency(totalExpense)}</span>
+                        </div>
+                    </div>
+                    
+                    {/* ... (CARD DE NÍVEL) ... */}
 
+                    {/* LISTA DE TRANSAÇÕES (AGORA DINÂMICA) */}
+                    <div className="transactions-list-card">
+                        <h3>Últimas Transações</h3>
+                        
+                        <div className="transaction-list-container">
+                            {transactions.length > 0 ? (
+                                transactions.map((tx) => (
+                                    <TransactionCard 
+                                        key={tx.id}
+                                        title={tx.title}
+                                        category={tx.category}
+                                        amount={tx.amount}
+                                        type={tx.type}
+                                        date={tx.date}
+                                    />
+                                ))
+                            ) : (
+                                <p className="summary-text" style={{textAlign: 'center', marginTop: '30px'}}>
+                                    Nenhuma transação registrada. Comece a adicionar uma na aba "Adicionar"!
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
+                </section>
+            </main>
         </div>
     );
 };

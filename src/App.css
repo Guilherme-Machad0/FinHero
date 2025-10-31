@@ -1,112 +1,265 @@
-/* src/App.css ou src/index.css */
+/* src/App.css (Código Consolidado para FinHero) */
 
-/* Definição de Cores - Baseado na Imagem */
+/* ========================================================= */
+/* --- 0. VARIÁVEIS DE TEMA (ROOT) --- */
+/* ========================================================= */
 :root {
     --finhero-blue: #1A1A2E; /* Cor de fundo principal */
-    --finhero-dark-green: #28A745; /* Botões, textos destacados */
-    --finhero-light-green: #4CAF50;
-    --finhero-text-dark: #333;
-    --finhero-text-light: #E0E0E0;
+    --finhero-dark-bg: #1A1A2E; 
+    --finhero-card-bg: #2C2C45; /* Fundo mais claro para os cards (elementos) */
+    --finhero-dark-green: #28A745; /* Cor de Destaque / Botões / Receita */
+    --finhero-light-green: #4CAF50; /* Hover de botões */
+    --finhero-green-hover: rgba(40, 167, 69, 0.1);
+    --finhero-green-active: rgba(40, 167, 69, 0.2);
+    --finhero-red: #DC3545; /* Cor de Despesa / Perigo */
     --finhero-red-mascot: #DC3545; /* Vermelho do mascote */
-    --finhero-input-bg: rgba(255, 255, 255, 0.1); /* Fundo dos inputs */
+    --finhero-gold: #FFD700; /* Cor das moedas / XP */
+    
+    --finhero-text-dark: #333; /* Texto para inputs claros */
+    --finhero-text-light: #E0E0E0; /* Texto principal em fundo escuro */
+    --finhero-text-faded: #AAAAAA; /* Texto mais apagado (hints, legendas) */
+    
+    --finhero-input-bg: rgba(255, 255, 255, 0.1); /* Fundo dos inputs escuros */
     --finhero-input-border: rgba(255, 255, 255, 0.3);
-    --finhero-gold: #FFD700; /* Cor das moedas */
-    --finhero-text-faded: #AAAAAA; /* Texto mais apagado */
 }
 
-/* Estilos Globais do Body (background principal, fonte) */
+/* ========================================================= */
+/* --- 1. ESTILOS GLOBAIS E BODY --- */
+/* ========================================================= */
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Arial', sans-serif; /* Use uma fonte mais próxima do Segoe UI se tiver */
-    background-color: var(--finhero-blue);
+    font-family: 'Arial', sans-serif;
+    background-color: var(--finhero-dark-bg);
     color: var(--finhero-text-light);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Ocupa a altura total da viewport */
-    overflow: hidden; /* Evita scroll indesejado */
-    position: relative; /* Para posicionamento absoluto de elementos de fundo */
+    position: relative;
+}
+.highlight-green {
+    color: var(--finhero-dark-green);
 }
 
-/* Container da Página de Login (Centraliza o conteúdo principal) */
-.login-page {
+/* ========================================================= */
+/* --- 2. LAYOUT GERAL (PÁGINAS AUTENTICADAS) --- */
+/* ========================================================= */
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.main-content {
+    /* Ajuste para que o conteúdo não fique por baixo da sidebar */
+    margin-left: 250px; 
+    padding: 20px 30px; 
+    width: calc(100% - 250px);
+    box-sizing: border-box;
+    min-height: 100vh;
+    background-color: #24243D; /* Fundo principal um pouco diferente do card */
+    
+    /* 🚨 Solução do Scroll: Permite que o conteúdo interno role */
+    overflow-y: auto;
+    height: 100vh; 
+}
+
+.page-container {
+    padding: 10px 0 50px 0; /* Padding superior menor, inferior maior para scroll */
+    color: var(--finhero-text-light);
+    max-width: 1100px; /* Largura máxima para o dashboard ficar agradável */
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+.page-title {
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+.page-subtitle {
+    color: var(--finhero-text-faded);
+    margin-top: 5px;
+}
+
+/* ========================================================= */
+/* --- 3. SIDEBAR (Componente de Navegação) --- */
+/* ========================================================= */
+
+.sidebar-container {
+    background-color: var(--finhero-dark-bg); 
+    width: 250px; 
+    min-height: 100vh;
+    padding: 20px 0; 
+    position: fixed; 
+    top: 0;
+    left: 0;
+    z-index: 10;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); 
+    display: flex;
+    flex-direction: column; 
+}
+
+/* Logo e Mascote */
+.sidebar-logo-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px 30px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+    margin-bottom: 10px;
+    gap: 10px;
+}
+.sidebar-logo-text {
+    font-size: 1.8rem;
+    color: var(--finhero-text-light); 
+    font-weight: bold;
+}
+.sidebar-mascot {
+    width: 35px; 
+    height: auto;
+}
+
+/* Navegação */
+.sidebar-nav {
+    flex-grow: 1; 
+    padding: 0;
+}
+.sidebar-nav ul { list-style: none; padding: 0; margin: 0; }
+
+.sidebar-nav-item a {
+    display: flex; /* Adiciona flex para ícone/texto */
+    align-items: center;
+    padding: 12px 20px;
+    color: var(--finhero-text-faded); 
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s;
+    border-left: 5px solid transparent; 
+}
+
+.sidebar-nav-item a.active {
+    background-color: var(--finhero-green-active);
+    color: var(--finhero-dark-green);
+    border-left-color: var(--finhero-dark-green);
+    font-weight: bold;
+}
+.sidebar-nav-item a:hover {
+    background-color: var(--finhero-green-hover); 
+    color: var(--finhero-dark-green); 
+}
+
+/* Rodapé e Sair */
+.sidebar-logout-wrapper {
+    margin-top: auto; 
+    padding: 20px 0 10px 0; 
+}
+.sidebar-logout-button {
+    width: 80%;
+    margin: 0 auto;
+    display: block; 
+    padding: 8px 15px; 
+    background-color: var(--finhero-red);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+.sidebar-logout-button:hover {
+    background-color: #C82333;
+}
+.sidebar-footer {
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--finhero-text-faded);
+}
+
+/* ========================================================= */
+/* --- 4. ESTILOS DE AUTENTICAÇÃO (Login & Signup) --- */
+/* ========================================================= */
+
+.login-page, .auth-page {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 50px;
-    max-width: 650px; /* Largura máxima para centralizar o conteúdo */
-    width: 100%; /* Garante que ocupe a largura disponível */
-    box-sizing: border-box; /* Inclui padding na largura total */
-    z-index: 1; /* Para ficar acima do padrão de moedas */
+    padding: 50px 20px;
+    max-width: 650px;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1;
     position: relative;
-    text-align: center; /* Centraliza o texto dentro da página */
+    text-align: center;
 }
 
-/* Seção do Logo (FinHero e Mascotes) */
-.logo-section {
+/* Logo (Comum) */
+.logo-section, .signup-logo-section {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-    gap: 10px; /* Espaçamento entre os elementos */
+    justify-content: center;
+    margin-bottom: 25px;
+    gap: 15px;
 }
 
-.mascot-left, .mascot-right {
-    width: 60px; /* Tamanho dos mascotes */
-    height: auto;
-    filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); /* Pequena sombra para destacá-los */
-}
-
-.mascot-left {
-    content: url('/src/assets/redevil-finhero.png'); /* Substitua pelo caminho real do seu goblin verde */
-}
-.mascot-right {
-    content: url('/src/assets/greendevil-finhero.png'); /* Substitua pelo caminho real do seu diabinho vermelho */
-}
-
-.logo-text {
-    font-size: 3.5rem; /* Tamanho grande para "FINHERO" */
+.logo-text, .signup-logo-text {
+    font-size: 3.5rem;
     font-weight: bold;
-    color: var(--finhero-dark-green); /* Verde brilhante */
-    text-shadow: 0 0 15px rgba(40, 167, 69, 0.6); /* Efeito neon verde */
+    color: var(--finhero-dark-green);
+    text-shadow: 0 0 15px rgba(40, 167, 69, 0.6);
     letter-spacing: 2px;
     margin: 0;
 }
+.signup-logo-text {
+    color: var(--finhero-text-light); /* FINHERO em branco/claro */
+    text-shadow: none;
+}
 
-/* Slogan e Tagline */
-.slogan {
+/* Mascotes */
+.mascot-left, .mascot-right, .signup-mascot {
+    width: 60px;
+    height: auto;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+}
+.signup-mascot { width: 70px; }
+
+
+/* Slogan/Tagline */
+.slogan, .signup-slogan {
     font-size: 1.6rem;
     font-weight: bold;
     color: var(--finhero-dark-green);
     margin-bottom: 10px;
 }
-
-.tagline {
-    font-size: 1.1rem;
-    color: var(--finhero-text-faded);
-    margin-bottom: 30px;
+.signup-slogan {
+    color: var(--finhero-text-light);
+    font-weight: normal;
+    margin: 0 0 35px 0;
 }
 
-/* Título do Formulário */
-.form-title {
+/* Título */
+.form-title, .signup-form-title {
     font-size: 1.8rem;
     color: var(--finhero-dark-green);
     margin-bottom: 25px;
 }
 
-/* Mensagem de Erro */
-.error-message {
-    color: var(--finhero-red-mascot);
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-/* Campos de Input */
-.input-field {
+/* Inputs */
+.input-field, .signup-input-field, .signup-input-full-width {
     width: 100%;
     padding: 12px 15px;
-    margin-bottom: 20px; /* Espaçamento entre os inputs */
+    margin-bottom: 20px;
     background-color: var(--finhero-input-bg);
     border: 1px solid var(--finhero-input-border);
     border-radius: 8px;
@@ -115,36 +268,21 @@ body {
     box-sizing: border-box;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
-.input-field::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
+.input-field::placeholder { color: rgba(255, 255, 255, 0.6); }
 .input-field:focus {
     border-color: var(--finhero-dark-green);
     box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
     outline: none;
 }
 
-/* Link Esqueceu a Senha */
-.forgot-password {
-    font-size: 0.9rem;
-    text-align: right;
-    margin-top: -10px; /* Ajusta para perto do input */
-    margin-bottom: 25px;
+/* Signup Específico */
+.signup-input-row { display: flex; gap: 10px; margin-bottom: 10px; width: 100%; }
+.signup-input-field { flex: 1; margin-bottom: 0; background-color: white; color: #333; }
+.signup-input-full-width { background-color: white; color: #333; }
 
-}
-.forgot-password a {
-    color: var(--finhero-dark-green);
-    text-decoration: none;
-    font-weight: bold;
-}
-.forgot-password a:hover {
-    text-decoration: underline;
-}
 
-/* Botão START */
-.login-button {
+/* Botões */
+.login-button, .signup-button {
     width: 100%;
     padding: 15px;
     background-color: var(--finhero-dark-green);
@@ -156,249 +294,262 @@ body {
     text-transform: uppercase;
     cursor: pointer;
     margin-top: 15px;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
     box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
 }
-
-.login-button:hover {
+.login-button:hover, .signup-button:hover {
     background-color: var(--finhero-light-green);
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
 }
 
-.login-button:active {
-    transform: translateY(0);
-    box-shadow: 0 3px 10px rgba(40, 167, 69, 0.3);
-}
+/* Links */
+.forgot-password, .signup-text { font-size: 0.9rem; color: var(--finhero-text-faded); }
+.forgot-password a, .signup-link { color: var(--finhero-dark-green); text-decoration: none; font-weight: bold; }
+.forgot-password a:hover, .signup-link:hover { text-decoration: underline; }
 
-/* Texto e Link de Cadastro */
-.signup-text {
-    margin-top: 30px;
-    font-size: 1rem;
-    color: var(--finhero-text-faded);
-}
-.signup-link {
-    color: var(--finhero-dark-green);
-    text-decoration: none;
-    font-weight: bold;
-}
-.signup-link:hover {
-    text-decoration: underline;
-}
-
-/* Efeito de Moedas no Rodapé */
+/* Efeito de Moedas */
 .coin-pattern {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 80px; /* Altura da "pilha" de moedas */
-    overflow: hidden;
-    z-index: 0; /* Fica abaixo do conteúdo do login */
-    pointer-events: none; /* Não interfere com cliques */
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; overflow: hidden; z-index: 0; pointer-events: none;
 }
-
 .coin-pattern::before {
-    content: '';
-    position: absolute;
-    top: -20px; /* Ajusta a posição vertical das moedas */
-    left: 0;
-    width: 100%;
-    height: 100px; /* Altura da área de onde as moedas "saem" */
-    background: 
-        radial-gradient(circle at 10% 80%, var(--finhero-gold) 10px, transparent 11px),
+    content: ''; position: absolute; top: -20px; left: 0; width: 100%; height: 100px;
+    background: radial-gradient(circle at 10% 80%, var(--finhero-gold) 10px, transparent 11px),
         radial-gradient(circle at 25% 70%, var(--finhero-gold) 12px, transparent 13px),
         radial-gradient(circle at 40% 90%, var(--finhero-gold) 11px, transparent 12px),
         radial-gradient(circle at 55% 75%, var(--finhero-gold) 13px, transparent 14px),
         radial-gradient(circle at 70% 85%, var(--finhero-gold) 10px, transparent 11px),
         radial-gradient(circle at 85% 65%, var(--finhero-gold) 12px, transparent 13px);
-    background-size: 150px 100px; /* Ajusta o tamanho da repetição para espalhar as moedas */
-    background-repeat: repeat-x;
-    animation: coinMove 30s linear infinite; /* Animação de movimento lateral */
-    filter: drop-shadow(0 -2px 5px rgba(0,0,0,0.5)); /* Sombra para as moedas */
+    background-size: 150px 100px; background-repeat: repeat-x;
+    animation: coinMove 30s linear infinite; 
+    filter: drop-shadow(0 -2px 5px rgba(0,0,0,0.5));
 }
+@keyframes coinMove { 0% { transform: translateX(0); } 100% { transform: translateX(-150px); } }
 
-/* Animação para o movimento das moedas */
-@keyframes coinMove {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-150px); } /* Move a "onda" de moedas */
-}
 
 /* ========================================================= */
-/* --- Variáveis de Tema (Mantenha ou defina se não existir) --- */
-/* ========================================================= */
-:root {
-  --finhero-dark-bg: #1A1A2E; 
-  --finhero-dark-green: #28A745; 
-  --finhero-text-light: #F0F0F0;
-  --finhero-text-faded: #AAAAAA;
-  --finhero-input-bg: #FFFFFF; /* Inputs brancos */
-  --finhero-input-border: #E0E0E0;
-  --finhero-gold: #FFD700;
-}
-
-/* Base Body Style */
-body {
-  margin: 0;
-  background-color: var(--finhero-dark-bg);
-  color: var(--finhero-text-light);
-  font-family: 'Arial', sans-serif; 
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-
-/* ========================================================= */
-/* --- Layout Comum (Container) --- */
+/* --- 5. ESTILOS DA PÁGINA HOME (DASHBOARD) --- */
 /* ========================================================= */
 
-.auth-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 500px; /* Mais largo que o login para caber os 2 inputs */
-  padding: 20px;
-  box-sizing: border-box;
-  z-index: 10;
-  text-align: center;
+/* Área de Widgets */
+.dashboard-widgets-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr; /* Layout: 1/4 | 1/4 | 1/2 */
+    gap: 20px;
+    margin-top: 20px;
 }
+
+/* Estilo Base dos Cards */
+.status-card, .placeholder-card-small, .transactions-list-card {
+    background-color: var(--finhero-card-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    color: var(--finhero-text-light);
+}
+
+.status-card h3, .transactions-list-card h3, .placeholder-card-small h3 {
+    color: var(--finhero-dark-green);
+    font-size: 1.3rem;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(40, 167, 69, 0.15);
+    margin-bottom: 15px;
+}
+
+/* Card de Status Financeiro */
+.status-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+.status-detail:last-child { border-bottom: none; }
+.status-detail p { color: var(--finhero-text-faded); margin: 0; }
+.saldo-value { color: #4CAF50; font-weight: bold; }
+.xp-value { color: var(--finhero-gold); font-weight: bold; }
+
+/* Lista de Transações */
+.transactions-list-card { grid-column: span 2; min-height: 400px; }
+.transaction-list-container { max-height: 300px; overflow-y: auto; padding-right: 10px; }
+
+/* Transaction Card */
+.transaction-card {
+    display: flex; justify-content: space-between; align-items: center;
+    background-color: var(--finhero-card-bg);
+    padding: 15px 20px; border-radius: 8px; margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-left: 5px solid transparent;
+}
+.transaction-card:hover { background-color: #353550; }
+.transaction-title { font-size: 1.1rem; color: var(--finhero-text-light); margin: 0 0 4px 0; font-weight: 600; }
+.transaction-category { font-size: 0.9rem; color: var(--finhero-text-faded); margin: 0; }
+.transaction-amount { font-size: 1.2rem; font-weight: bold; display: block; margin-bottom: 4px; }
+.income-color { color: var(--finhero-dark-green); border-left-color: var(--finhero-dark-green); }
+.expense-color { color: var(--finhero-red); border-left-color: var(--finhero-red); }
+
 
 /* ========================================================= */
-/* --- Estilos da Página de Cadastro (Signup) --- */
+/* --- 6. ESTILOS DA PÁGINA ADICIONAR --- */
 /* ========================================================= */
 
-.signup-logo-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 25px;
-  gap: 15px; /* Espaço entre o texto e o mascote */
+.add-form { background-color: var(--finhero-card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
+.form-group { margin-bottom: 20px; }
+.form-row { display: flex; gap: 20px; margin-bottom: 20px; }
+.form-row .form-group { margin-bottom: 0; }
+.flex-item-70 { flex: 7; } .flex-item-30 { flex: 3; } .flex-item-50 { flex: 1; }
+
+.form-label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--finhero-text-light); font-size: 1rem; }
+
+.form-input, .form-textarea, .form-select {
+    width: 100%; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 6px;
+    background-color: #1A1A2E; color: var(--finhero-text-light); font-size: 1rem;
+    transition: border-color 0.3s; box-sizing: border-box;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--finhero-dark-green); outline: none; }
+.form-select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="%23AAAAAA" viewBox="0 0 20 20"><path d="M10 12l-6-6h12l-6 6z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px top 50%;
+    padding-right: 30px;
 }
 
-.signup-logo-text {
-  font-size: 3.5rem;
-  font-weight: bold;
-  color: var(--finhero-text-light); /* FINHERO em branco/claro */
-  margin: 0;
+/* Toggle Button */
+.type-toggle { display: flex; background-color: #1A1A2E; border-radius: 8px; overflow: hidden; }
+.type-button {
+    flex: 1; padding: 15px; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem;
+    transition: background-color 0.3s, color 0.3s; color: var(--finhero-text-faded); background-color: transparent;
 }
+.type-button:hover { background-color: rgba(255, 255, 255, 0.05); }
+.active-income { background-color: var(--finhero-dark-green) !important; color: var(--finhero-text-light) !important; }
+.active-expense { background-color: var(--finhero-red) !important; color: var(--finhero-text-light) !important; }
 
-.signup-mascot {
-  width: 70px; /* Tamanho do goblin */
-  height: auto;
-  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+/* Botão de Envio */
+.add-transaction-button {
+    width: 100%; padding: 15px; background-color: var(--finhero-dark-green); color: white; border: none;
+    border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-top: 10px;
 }
-
-.signup-slogan {
-  font-size: 1.5rem;
-  font-weight: normal; /* A imagem tem um peso de fonte mais suave */
-  color: var(--finhero-text-light);
-  margin: 0 0 35px 0;
-  line-height: 1.3;
-}
-
-.signup-form-title {
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: var(--finhero-dark-green);
-  margin-bottom: 25px;
-}
-
-/* Estilo para inputs na mesma linha */
-.signup-input-row {
-  display: flex;
-  gap: 10px; /* Espaço entre Nome e E-mail */
-  margin-bottom: 10px;
-  width: 100%;
-}
-
-/* Inputs de Nome e E-mail (na linha) */
-.signup-input-field {
-  flex: 1; /* Ocupa metade do espaço disponível */
-  padding: 12px 15px;
-  background-color: var(--finhero-input-bg);
-  border: 1px solid var(--finhero-input-border);
-  border-radius: 6px;
-  color: #333; /* Texto dentro do input escuro */
-  font-size: 1rem;
-  box-sizing: border-box;
-  text-align: left;
-}
-
-/* Input de Senha (largura total) */
-.signup-input-full-width {
-  width: 100%;
-  padding: 12px 15px;
-  background-color: var(--finhero-input-bg);
-  border: 1px solid var(--finhero-input-border);
-  border-radius: 6px;
-  color: #333;
-  font-size: 1rem;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-  text-align: left;
-}
+.add-transaction-button:hover { background-color: #238C3B; }
 
 
-/* BOTÃO START */
-.signup-button {
-  width: 100%;
-  padding: 15px;
-  background-color: var(--finhero-dark-green);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.3rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+/* ========================================================= */
+/* --- 7. ESTILOS DA PÁGINA DUPLA --- */
+/* ========================================================= */
+
+.duo-content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.duo-panel { background-color: var(--finhero-card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); min-height: 250px; }
+.duo-panel h3 { color: var(--finhero-dark-green); border-bottom: 1px solid rgba(40, 167, 69, 0.2); padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-size: 1.5rem; }
+.duo-panel p { color: var(--finhero-text-faded); }
+
+/* Botões Gerais */
+.primary-button {
+    width: 100%; padding: 12px; background-color: var(--finhero-dark-green); color: white; border: none;
+    border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-top: 15px;
 }
-.signup-button:hover {
-  background-color: #4CAF50;
+.primary-button:hover:not(:disabled) { background-color: #238C3B; }
+.primary-button:disabled { background-color: #4CAF50; opacity: 0.6; cursor: not-allowed; }
+
+.secondary-button {
+    padding: 12px; background-color: transparent; color: var(--finhero-text-faded); border: 1px solid var(--finhero-text-faded);
+    border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 15px; width: 100%;
+}
+.secondary-button:hover { background-color: rgba(255, 255, 255, 0.1); color: var(--finhero-text-light); }
+
+/* Código de Convite */
+.invitation-code-display {
+    display: flex; justify-content: space-between; align-items: center; background-color: #1A1A2E;
+    padding: 15px; border-radius: 6px; margin: 20px 0; border: 1px dashed var(--finhero-dark-green);
+}
+.code-text { font-size: 1.6rem; font-weight: bold; color: var(--finhero-dark-green); letter-spacing: 2px; }
+.copy-button {
+    background-color: #1A1A2E; color: var(--finhero-text-light); border: 1px solid var(--finhero-text-faded);
+    padding: 8px 15px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s;
+}
+.copy-button:hover { background-color: rgba(255, 255, 255, 0.1); }
+.code-input { text-align: center; font-size: 1.2rem; letter-spacing: 1px; }
+
+/* Box Conectado */
+.connected-box { background-color: var(--finhero-card-bg); padding: 30px; border-radius: 12px; border-left: 5px solid var(--finhero-dark-green); margin-top: 20px; }
+.partner-info { display: flex; align-items: center; gap: 15px; font-size: 1.2rem; margin: 10px 0; }
+.partner-status-tag { background-color: var(--finhero-dark-green); color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; }
+
+
+/* ========================================================= */
+/* --- 8. ESTILOS DA PÁGINA PERFIL --- */
+/* ========================================================= */
+
+.profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+.profile-panel { 
+    background-color: var(--finhero-card-bg); padding: 30px; border-radius: 12px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); align-self: start; 
 }
 
-/* EFEITO DE MOEDAS (Comum) */
-.coin-pattern {
-  /* ... (Mantenha o estilo das moedas de outras respostas) ... */
-  position: absolute;
-  bottom: 0;
-  /* ... */
+.profile-panel h3 { color: var(--finhero-dark-green); border-bottom: 1px solid rgba(40, 167, 69, 0.2); padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-size: 1.5rem; }
+
+.form-hint { display: block; font-size: 0.85rem; color: var(--finhero-text-faded); margin-top: 5px; }
+.profile-actions { display: flex; gap: 15px; margin-top: 25px; }
+
+/* Painel de Status do Jogo */
+.game-status-panel .status-detail { border-bottom: none; padding: 10px 0; }
+.level-value { font-size: 1.8rem; }
+.divider { border-top: 1px dashed rgba(255, 255, 255, 0.1); margin: 15px 0; }
+
+/* Status Dupla (No Perfil) */
+.duo-status-box { padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2); }
+.duo-status-box.connected { border-left: 5px solid var(--finhero-dark-green); }
+.duo-status-box.none { border-left: 5px solid var(--finhero-red); }
+
+.danger-button {
+    width: 100%; padding: 10px; background-color: var(--finhero-red); color: white; border: none;
+    border-radius: 6px; font-weight: bold; cursor: pointer; transition: background-color 0.3s;
+    margin-top: 10px;
 }
+.danger-button:hover { background-color: #C82333; }
+.full-width-button { margin-top: 20px; }
+
 
 /* ========================================================= */
 /* --- MEDIA QUERIES (Responsividade) --- */
 /* ========================================================= */
 
-@media (max-width: 550px) {
-  .auth-container {
-      max-width: 100%;
-  }
-  
-  .signup-logo-text {
-      font-size: 2.5rem;
-  }
-  
-  .signup-mascot {
-      width: 55px;
-  }
+@media (max-width: 1200px) {
+    /* Ajusta o dashboard em telas menores */
+    .dashboard-widgets-area {
+        grid-template-columns: 1fr 1fr; /* Volta para 2 colunas */
+    }
+    .transactions-list-card {
+        grid-column: span 2; /* A lista ocupa a largura total inferior */
+    }
+}
 
-  .signup-slogan {
-      font-size: 1.2rem;
-  }
-  
-  /* Para telas muito pequenas, empilha os inputs de Nome e E-mail */
-  .signup-input-row {
-      flex-direction: column;
-      gap: 0;
-      margin-bottom: 0;
-  }
-  
-  .signup-input-field {
-      margin-bottom: 10px;
-  }
+@media (max-width: 900px) {
+    /* Ajusta Perfil e Dupla para empilhar em telas menores */
+    .profile-grid, .duo-content-grid {
+        grid-template-columns: 1fr; /* Coluna única */
+    }
+    .profile-panel { 
+        min-height: auto; 
+    }
+}
+
+@media (max-width: 768px) {
+    /* Ajusta Sidebar */
+    .sidebar-container { width: 100%; height: auto; position: static; box-shadow: none; }
+    .main-content { margin-left: 0; width: 100%; padding: 20px; overflow-y: visible; height: auto; }
+    .app-layout { flex-direction: column; }
+    
+    /* Login/Signup */
+    .login-page, .auth-page { max-width: 100%; padding: 20px; }
+    .logo-text, .signup-logo-text { font-size: 2.5rem; }
+
+    /* Adicionar */
+    .form-row { flex-direction: column; gap: 0; }
+    .form-row .form-group { margin-bottom: 20px; }
+}
+
+@media (max-width: 550px) {
+    .signup-input-row { flex-direction: column; gap: 0; margin-bottom: 0; }
+    .signup-input-field { margin-bottom: 10px; }
 }
