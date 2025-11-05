@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FinHeroService } from '../services/FinHeroService'; // ⬅️ NOVO: Importa o serviço de API
-
+import { FinHeroService } from '../services/index';
 import Joystix from '../assets/fonts/JoystixMonospace.otf';
 import '../styles/AuthPage.css';
-import 'boxicons/css/boxicons.min.css';
 
-import logoDiabinho from '../assets/images/logo-diabinho-verde.png';
-import logoDiabinhoRed from '../assets/images/logo-diabinho-vermelho.png';
+import logoDiabinho from '../assets/logo-diabinho-verde.png';
+import logoDiabinhoRed from '../assets/logo-diabinho-vermelho.png';
 
 interface AuthPageProps {
   onLoginSuccess: () => void;
