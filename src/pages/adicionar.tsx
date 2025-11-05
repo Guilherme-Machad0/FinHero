@@ -1,9 +1,6 @@
-// src/pages/adicionar.tsx
-
 import React, { useState, FormEvent } from 'react';
-// 1. Importa useLocation para saber a rota atual
 import { useNavigate, useLocation } from 'react-router-dom'; 
-import Sidebar from '../components/ui/sidebar.tsx'; // ⬅️ Garante o '.tsx'
+import Sidebar from '../components/ui/sidebar.tsx';
 
 export interface TransactionForm {
     title: string;
@@ -14,34 +11,29 @@ export interface TransactionForm {
     description: string;
 }
 
-// 2. Assinatura de props (Recebe a função onAddTransaction)
 interface AdicionarProps {
     onAddTransaction: (transaction: Omit<TransactionForm, 'amount'> & { amount: number }) => void; 
 }
 
-// 3. O componente recebe a prop onAddTransaction
 const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
     const navigate = useNavigate();
-    // 4. Inicializa useLocation e pega o path
     const location = useLocation(); 
     const currentPath = location.pathname;
     
-    // Configura uma função de logout simulada para a Sidebar
     const handleLogout = () => navigate('/login'); 
     
     const [form, setForm] = useState<TransactionForm>({
         title: '',
         amount: '',
-        type: 'expense', // Padrão: Despesa
+        type: 'expense',
         category: 'Alimentação',
-        date: new Date().toISOString().split('T')[0], // Data de hoje
+        date: new Date().toISOString().split('T')[0],
         description: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
         
-        // Trata o input de número para garantir que seja um valor válido ou string vazia
         const finalValue = (type === 'number' && value !== '') ? parseFloat(value) : value;
 
         setForm(prev => ({
@@ -53,19 +45,16 @@ const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         
-        // Validação simples
         if (form.title.trim() === '' || form.amount === '' || form.amount <= 0) {
             alert("Por favor, preencha o Título e um Valor válido.");
             return;
         }
 
-        // 4. Cria a transação final com o valor formatado como number
         const finalTransaction = {
             ...form,
             amount: parseFloat(form.amount.toString()), 
         };
 
-        // 5. CHAMA A FUNÇÃO RECEBIDA POR PROPS
         onAddTransaction(finalTransaction);
         
         alert(`Transação de ${form.type === 'expense' ? 'Despesa' : 'Receita'} adicionada!`);
@@ -73,13 +62,10 @@ const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
     };
 
     return (
-        // ⬅️ 6. Envolve todo o conteúdo com o layout principal
         <div className="app-layout"> 
             
-            {/* ⬅️ 7. Renderiza a Sidebar */}
             <Sidebar onLogout={handleLogout} activePath={currentPath} /> 
             
-            {/* ⬅️ 8. Renderiza o conteúdo da página dentro de <main> */}
             <main className="main-content">
                 <div className="page-container add-page-container">
                     <header className="page-header">
@@ -91,7 +77,6 @@ const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
                     
                     <form className="add-form" onSubmit={handleSubmit}>
                         
-                        {/* 1. Tipo de Transação (Receita/Despesa) */}
                         <div className="form-group type-selector-group">
                             <label className="form-label">Tipo:</label>
                             <div className="type-toggle">
@@ -112,7 +97,6 @@ const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
                             </div>
                         </div>
 
-                        {/* 2. Título e Valor */}
                         <div className="form-row">
                             <div className="form-group flex-item-70">
                                 <label className="form-label" htmlFor="title">Título:</label>
@@ -144,7 +128,6 @@ const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
                             </div>
                         </div>
 
-                        {/* 3. Categoria e Data */}
                         <div className="form-row">
                             <div className="form-group flex-item-50">
                                 <label className="form-label" htmlFor="category">Categoria:</label>
@@ -177,7 +160,6 @@ const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
                             </div>
                         </div>
 
-                        {/* 4. Descrição */}
                         <div className="form-group">
                             <label className="form-label" htmlFor="description">Descrição (Opcional):</label>
                             <textarea
@@ -191,7 +173,6 @@ const Adicionar: React.FC<AdicionarProps> = ({ onAddTransaction }) => {
                             />
                         </div>
 
-                        {/* Botão de Envio */}
                         <button type="submit" className="submit-button add-transaction-button">
                             Registrar Transação
                         </button>

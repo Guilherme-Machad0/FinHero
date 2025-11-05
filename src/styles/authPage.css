@@ -1,0 +1,583 @@
+/* FONTES */
+@font-face {
+  font-family: 'Joystix'; /* ⬅️ CORREÇÃO DE SINTAXE APLICADA AQUI */
+  src: url('../assets/fonts/joystix monospace.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+/* ... (Resto das Variáveis) ... */
+  
+  /* VARIAVEIS */
+  :root {
+    --color-primary-green: #18A340;
+    --color-primary-hover-green: #158E3C;
+    --color-primary-red: #C94C4C;
+    --color-primary-hover-red: #B34444;
+    --color-background: #1A1A1A;
+    --color-text-light: #E0E0E0;
+    --color-text-faded: #9E9E9E;
+    --color-dark-panel: #1A2227;
+  }
+  
+  /* ESTILOS GLOBAIS */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Joystix', 'Poppins', sans-serif;
+    -webkit-font-smoothing: none;
+  }
+  
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--color-background);
+  }
+  
+  /* CONTAINER PRINCIPAL */
+  .wrapper {
+    position: relative;
+    width: 750px;
+    height: 450px;
+    background-color: rgba(31, 44, 51, 0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+  
+  /* CAIXA DO FORMULÁRIO (LOGIN E CADASTRO) */
+  .wrapper .form-box {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 50; /* ⬅️ AJUSTE: Z-index mais alto para garantir que os campos sejam clicáveis */
+  }
+  
+  .wrapper .form-box.login {
+    left: 0;
+    width: 55%;
+    padding: 0 60px 0 40px;
+    z-index: 50; /* Z-index do formulário ativo */
+    pointer-events: auto; /* ⬅️ GARANTE QUE OS BOTÕES DE LOGIN SÃO CLICÁVEIS */
+  }
+  
+  .wrapper.active .form-box.login {
+    pointer-events: auto; /* Desabilita Login quando o Registro está ativo */
+  }
+  
+  .wrapper .form-box.register {
+    padding: 0 40px 0 60px;
+    right: 0;
+    pointer-events: auto;
+    z-index: 50;
+  }
+  
+  /* * ============================================
+   * ============ ALTERAÇÃO FEITA AQUI ==========
+   * Adição de 'transition-delay' para sincronizar
+   * ============================================
+   */
+  
+  /* IMAGEM DO LOGIN (VERDE) */
+  .login-image {
+    position: absolute;
+    top: -9px;
+    left: 35%; /* ⬅️ POSIÇÃO AJUSTADA para lateral direita */
+    width: 250px;
+    height: auto;
+    transform: rotate(12deg);
+    z-index: 30; /* ⬅️ Z-index mais alto para ficar visível (acima do texto e do fundo) */
+    opacity: 1;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    transition-delay: 2.1s;
+    pointer-events: none; /* ⬅️ MANTIDO: Mascote não bloqueia cliques */
+  }
+  
+  .wrapper.active .login-image {
+    opacity: 0;
+    transform: translateX(-150%) rotate(0deg); /* Faz o mascote sair junto com o form */
+    transition-delay: 0s;
+  }
+  
+  /* IMAGEM DO CADASTRO (VERMELHA) */
+  .register-image {
+    position: absolute;
+    top: -9px;
+    left: 235px;
+    width: 250px;
+    height: auto;
+    transform: translateX(-100px) rotate(0deg); 
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+    /* SEM ATRASO para sair junto com o formulário de cadastro (j=0) */
+    transition-delay: 0s;
+    pointer-events: none;
+  }
+  
+  .wrapper.active .register-image {
+    opacity: 1;
+    transform: rotate(-12deg);
+    /* ATRASO para sincronizar com a entrada do formulário de cadastro (i=17) */
+    transition-delay: 1.7s;
+  }
+  /* ============================================
+   * ============ FIM DA ALTERAÇÃO ==============
+   * ============================================
+   */
+  
+  
+  .form-box h2 {
+    margin-bottom: 10px;
+    position: relative;
+    font-size: 32px;
+    color: var(--color-text-light);
+    text-align: center;
+  }
+  
+  .form-box h2::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--color-primary-green);
+  }
+  
+  .form-box .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 20px 0;
+  }
+  
+  .input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: var(--color-text-light);
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid var(--color-text-light);
+    transition: .5s;
+    padding-right: 23px;
+  }
+  
+  .input-box input:focus,
+  .input-box input:valid {
+    border-bottom-color: var(--color-primary-green);
+  }
+  
+  .input-box label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--color-text-light);
+    pointer-events: none;
+    transition: 0.5s;
+  }
+  
+  .input-box input:focus~label,
+  .input-box input:valid~label {
+    top: -5px;
+    color: var(--color-primary-green);
+  }
+  
+  .input-box i {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--color-text-light);
+    transition: 0.5s;
+  }
+  
+  .input-box input:focus~i,
+  .input-box input:valid~i {
+    color: var(--color-primary-green);
+  }
+  
+  form button {
+    width: 100%;
+    height: 45px;
+    margin-top: 10px;
+    color: var(--color-text-light);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: .3s;
+  }
+  
+  form .linkTxt {
+    position: relative;
+    top: 0px;
+    font-size: 14px;
+    color: var(--color-text-light);
+    text-align: center;
+    margin: 15px 0 10px;
+    /* Adiciona um pouco mais de margem para o contêiner superior */
+    padding-bottom: 5px; 
+}
+  
+.linkTxt p a {
+  display: inline-block;
+  padding: 5px 10px; 
+  color: var(--color-primary-green);
+  text-decoration: none;
+  font-weight: 600;
+  margin: -5px -10px; 
+  cursor: pointer; 
+}
+  
+  .form-box.login form button {
+    background-color: var(--color-primary-green);
+  }
+  
+  .form-box.login form button:hover {
+    background-color: var(--color-primary-hover-green);
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.8);
+  }
+  
+  .wrapper .form-box.login .linkTxt {
+    top: 15px;
+  }
+  
+  .wrapper.active .form-box.register h2 {
+    margin-top: 20px;
+  }
+  
+  .wrapper.active .form-box.register h2::after {
+    background: var(--color-primary-red);
+  }
+  
+  .wrapper.active .form-box.register form button {
+    background-color: var(--color-primary-red);
+  }
+  
+  .wrapper.active .form-box.register form button:hover {
+    background-color: var(--color-primary-hover-red);
+    box-shadow: 0 0 10px rgba(201, 76, 76, 0.8);
+  }
+  
+  .wrapper.active .form-box.register .linkTxt {
+    top: 5px;
+  }
+  
+  .wrapper.active .form-box.register .linkTxt p a {
+    color: var(--color-primary-red);
+  }
+  
+  .wrapper.active .form-box.register .input-box input:focus~label,
+  .wrapper.active .form-box.register .input-box input:valid~label {
+    color: var(--color-primary-red);
+  }
+  
+  .wrapper.active .form-box.register .input-box input:focus~i,
+  .wrapper.active .form-box.register .input-box input:valid~i {
+    color: var(--color-primary-red);
+  }
+  
+  .wrapper.active .form-box.register .input-box input:focus,
+  .wrapper.active .form-box.register .input-box input:valid {
+    border-bottom-color: var(--color-primary-red);
+  }
+  
+  .wrapper .form-box.register {
+    /* ... */
+    pointer-events: none; /* ⬅️ CORRETO: Desabilita cliques no formulário de Cadastro */
+    z-index: 4;
+}
+
+.wrapper.active .form-box.register * {
+  opacity: 1 !important;
+  filter: blur(0) !important;
+}
+
+.wrapper.active .form-box.register input,
+.wrapper.active .form-box.register button,
+.wrapper.active .form-box.register a {
+  pointer-events: auto;
+  cursor: pointer;
+  opacity: 1 !important;
+  filter: blur(0) !important;
+}
+
+.wrapper.active .form-box.register input {
+  cursor: text;
+  color: var(--color-text-light) !important;
+}
+
+.wrapper.active .form-box.register label {
+  opacity: 1 !important;
+  color: var(--color-text-light) !important;
+  visibility: visible !important;
+}
+
+.wrapper.active .form-box.register h2 {
+  opacity: 1 !important;
+  color: var(--color-text-light) !important;
+  visibility: visible !important;
+}
+
+.wrapper.active .form-box.register .linkTxt,
+.wrapper.active .form-box.register .linkTxt p {
+  opacity: 1 !important;
+  color: var(--color-text-light) !important;
+  visibility: visible !important;
+}
+
+.wrapper.active .form-box.register i {
+  opacity: 1 !important;
+  color: var(--color-text-light) !important;
+  visibility: visible !important;
+}
+.wrapper.active .form-box.register {
+  pointer-events: auto; 
+  z-index: 50; /* Garante que está no topo e clicável */
+}
+   
+.wrapper .info-text {
+  position: absolute;
+  top: 0;
+  width: 50%; /* Ocupa a metade do contêiner */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 20; /* Z-index para ficar acima do fundo inclinado (rotate-bg: 1) */
+}
+  
+.wrapper .info-text.login {
+  /* Mantenha o bloco ancorado na direita */
+  right: 130px; 
+  /* Coloque um 'left' grande ou use a combinação 'right: 0' com 'width: 50%' */
+  left: 55%; /* ⬅️ Ocupa a metade direita (de 50% até 100%) */
+  
+  text-align: center; /* Centraliza o texto dentro de sua área */
+  padding: 0 40px 60px 40px; /* Reduza o padding conforme necessário */
+}
+  
+  .wrapper .info-text.register {
+    left: 0;
+    text-align: left;
+    padding: 0 150px 60px 40px;
+    pointer-events: none;
+  }
+  
+  .wrapper.active .info-text.register {
+    pointer-events: auto;
+  }
+  
+  .wrapper .info-text h2 {
+    font-size: 36px;
+    color: var(--color-text-light);
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  
+  .wrapper .info-text p {
+    font-size: 16px;
+    color: var(--color-text-faded);
+  }
+  
+  .neon-text-green {
+    color: var(--color-primary-green);
+    text-shadow:
+      0 0 5px rgba(24, 163, 64, 0.7),
+      0 0 10px rgba(24, 163, 64, 0.7),
+      0 0 20px rgba(24, 163, 64, 0.6),
+      0 0 30px rgba(24, 163, 64, 0.5);
+  }
+  
+  .neon-text-red {
+    color: var(--color-primary-red);
+    text-shadow:
+      0 0 5px rgba(201, 76, 76, 0.7),
+      0 0 10px rgba(201, 76, 76, 0.7),
+      0 0 20px rgba(201, 76, 76, 0.6),
+      0 0 30px rgba(201, 76, 76, 0.5);
+  }
+  
+  .wrapper .info-text p.neon-text-green {
+    color: var(--color-primary-green) !important;
+    line-height: 1.5;
+    margin-top: 15px;
+  }
+  
+  .wrapper .info-text p.neon-text-red {
+    color: var(--color-primary-red) !important;
+    line-height: 1.5;
+    margin-top: 15px;
+  }
+  
+  /* LÓGICA DE ANIMAÇÃO ORIGINAL */
+.wrapper .rotate-bg {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  width: 850px;
+  height: 600px;
+  background: var(--color-dark-panel);
+  transform: rotate(10deg) skewY(40deg);
+  transform-origin: bottom right;
+  transition: 1.5s ease;
+  transition-delay: 1.6s;
+  pointer-events: none;
+  z-index: 1;
+}
+  
+  .wrapper.active .rotate-bg {
+    transform: rotate(0) skewY(0);
+    transition-delay: 0.5s;
+  }
+  
+  .wrapper .rotate-bg2 {
+  position: absolute;
+  top: 100%;
+  left: 250px;
+  width: 850px;
+  height: 700px;
+  background: rgba(80, 80, 80, 0.178);
+  transform: rotate(0) skewY(0);
+  transform-origin: bottom left;
+  transition: 1.5s ease;
+  transition-delay: 0.5s;
+  pointer-events: none;
+  z-index: 1;
+}
+  
+  .wrapper.active .rotate-bg2 {
+    transform: rotate(-11deg) skewY(-40deg);
+    transition-delay: 1.2s;
+  }
+  
+  .wrapper .form-box.login .animation {
+    transform: translateX(0);
+    transition: 0.7s ease;
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: calc(.1s * var(--j));
+  }
+  
+  .wrapper.active .form-box.login .animation {
+    transform: translateX(-120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition-delay: calc(.1s * var(--i));
+  }
+  
+  .wrapper .info-text.login .animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition: 0.7s ease;
+    transition-delay: calc(.1s * var(--j));
+  }
+  
+  .wrapper.active .info-text.login .animation {
+    transform: translateX(120px);
+    opacity: 0;
+    filter: blur(10px);
+    transition: 0.7s ease;
+    transition-delay: calc(.1s * var(--i));
+  }
+  
+  .wrapper .form-box.register .animation {
+    transform: translateX(120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition: .7s ease;
+    transition-delay: calc(.1s * var(--j));
+  }
+  
+  .wrapper.active .form-box.register .animation {
+    transform: translateX(0);
+    opacity: 1 !important;
+    filter: blur(0) !important;
+    transition-delay: calc(.1s * var(--i));
+  }
+  
+  .wrapper .info-text.register .animation {
+    transform: translateX(-120%);
+    opacity: 0;
+    filter: blur(10px);
+    transition: .7s ease;
+    transition-delay: calc(.1s * var(--j));
+  }
+  
+  .wrapper.active .info-text.register .animation {
+    transform: translateX(0);
+    opacity: 1;
+    filter: blur(0);
+    transition-delay: calc(.1s * var(--i));
+  }
+  
+  @media (max-width: 900px) {
+    .wrapper {
+      max-width: 450px;
+      min-height: 0;
+      height: auto;
+    }
+  
+    .overlay-container,
+    .info-text,
+    .rotate-bg,
+    .rotate-bg2,
+    .login-image,
+    .register-image {
+      display: none;
+    }
+  
+    .form-box {
+      position: relative;
+      width: 100%;
+      padding: 40px 30px;
+    }
+  
+    .form-box.register {
+      display: none;
+    }
+  
+    .wrapper.active .login-container {
+      display: none;
+    }
+  
+    .wrapper.active .form-box.register {
+      display: flex;
+      opacity: 1;
+      transform: none;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    body {
+      padding: 0;
+    }
+    .wrapper {
+      border-radius: 0;
+      min-height: 100vh;
+      width: 100%;
+    }
+  }
+  

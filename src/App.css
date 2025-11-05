@@ -1,31 +1,23 @@
-/* src/App.css (Código Consolidado para FinHero) */
-
-/* ========================================================= */
-/* --- 0. VARIÁVEIS DE TEMA (ROOT) --- */
-/* ========================================================= */
 :root {
-    --finhero-blue: #1A1A2E; /* Cor de fundo principal */
+    --finhero-blue: #1A1A2E;
     --finhero-dark-bg: #1A1A2E; 
-    --finhero-card-bg: #2C2C45; /* Fundo mais claro para os cards (elementos) */
-    --finhero-dark-green: #28A745; /* Cor de Destaque / Botões / Receita */
-    --finhero-light-green: #4CAF50; /* Hover de botões */
+    --finhero-card-bg: #2C2C45;
+    --finhero-dark-green: #28A745;
+    --finhero-light-green: #4CAF50;
     --finhero-green-hover: rgba(40, 167, 69, 0.1);
     --finhero-green-active: rgba(40, 167, 69, 0.2);
-    --finhero-red: #DC3545; /* Cor de Despesa / Perigo */
-    --finhero-red-mascot: #DC3545; /* Vermelho do mascote */
-    --finhero-gold: #FFD700; /* Cor das moedas / XP */
+    --finhero-red: #DC3545;
+    --finhero-red-mascot: #DC3545;
+    --finhero-gold: #FFD700;
     
-    --finhero-text-dark: #333; /* Texto para inputs claros */
-    --finhero-text-light: #E0E0E0; /* Texto principal em fundo escuro */
-    --finhero-text-faded: #AAAAAA; /* Texto mais apagado (hints, legendas) */
+    --finhero-text-dark: #333;
+    --finhero-text-light: #E0E0E0;
+    --finhero-text-faded: #AAAAAA;
     
-    --finhero-input-bg: rgba(255, 255, 255, 0.1); /* Fundo dos inputs escuros */
+    --finhero-input-bg: rgba(255, 255, 255, 0.1);
     --finhero-input-border: rgba(255, 255, 255, 0.3);
 }
 
-/* ========================================================= */
-/* --- 1. ESTILOS GLOBAIS E BODY --- */
-/* ========================================================= */
 body {
     margin: 0;
     padding: 0;
@@ -42,10 +34,6 @@ body {
     color: var(--finhero-dark-green);
 }
 
-/* ========================================================= */
-/* --- 2. LAYOUT GERAL (PÁGINAS AUTENTICADAS) --- */
-/* ========================================================= */
-
 .app-layout {
     display: flex;
     min-height: 100vh;
@@ -53,23 +41,21 @@ body {
 }
 
 .main-content {
-    /* Ajuste para que o conteúdo não fique por baixo da sidebar */
     margin-left: 250px; 
     padding: 20px 30px; 
     width: calc(100% - 250px);
     box-sizing: border-box;
     min-height: 100vh;
-    background-color: #24243D; /* Fundo principal um pouco diferente do card */
+    background-color: #24243D;
     
-    /* 🚨 Solução do Scroll: Permite que o conteúdo interno role */
     overflow-y: auto;
     height: 100vh; 
 }
 
 .page-container {
-    padding: 10px 0 50px 0; /* Padding superior menor, inferior maior para scroll */
+    padding: 10px 0 50px 0;
     color: var(--finhero-text-light);
-    max-width: 1100px; /* Largura máxima para o dashboard ficar agradável */
+    max-width: 1100px;
     margin: 0 auto;
 }
 
@@ -89,10 +75,6 @@ body {
     margin-top: 5px;
 }
 
-/* ========================================================= */
-/* --- 3. SIDEBAR (Componente de Navegação) --- */
-/* ========================================================= */
-
 .sidebar-container {
     background-color: var(--finhero-dark-bg); 
     width: 250px; 
@@ -107,7 +89,6 @@ body {
     flex-direction: column; 
 }
 
-/* Logo e Mascote */
 .sidebar-logo-section {
     display: flex;
     align-items: center;
@@ -127,7 +108,6 @@ body {
     height: auto;
 }
 
-/* Navegação */
 .sidebar-nav {
     flex-grow: 1; 
     padding: 0;
@@ -135,7 +115,7 @@ body {
 .sidebar-nav ul { list-style: none; padding: 0; margin: 0; }
 
 .sidebar-nav-item a {
-    display: flex; /* Adiciona flex para ícone/texto */
+    display: flex;
     align-items: center;
     padding: 12px 20px;
     color: var(--finhero-text-faded); 
@@ -156,7 +136,6 @@ body {
     color: var(--finhero-dark-green); 
 }
 
-/* Rodapé e Sair */
 .sidebar-logout-wrapper {
     margin-top: auto; 
     padding: 20px 0 10px 0; 
@@ -186,10 +165,6 @@ body {
     color: var(--finhero-text-faded);
 }
 
-/* ========================================================= */
-/* --- 4. ESTILOS DE AUTENTICAÇÃO (Login & Signup) --- */
-/* ========================================================= */
-
 .login-page, .auth-page {
     display: flex;
     flex-direction: column;
@@ -204,7 +179,6 @@ body {
     text-align: center;
 }
 
-/* Logo (Comum) */
 .logo-section, .signup-logo-section {
     display: flex;
     align-items: center;
@@ -222,11 +196,10 @@ body {
     margin: 0;
 }
 .signup-logo-text {
-    color: var(--finhero-text-light); /* FINHERO em branco/claro */
+    color: var(--finhero-text-light);
     text-shadow: none;
 }
 
-/* Mascotes */
 .mascot-left, .mascot-right, .signup-mascot {
     width: 60px;
     height: auto;
@@ -235,7 +208,6 @@ body {
 .signup-mascot { width: 70px; }
 
 
-/* Slogan/Tagline */
 .slogan, .signup-slogan {
     font-size: 1.6rem;
     font-weight: bold;
@@ -248,14 +220,12 @@ body {
     margin: 0 0 35px 0;
 }
 
-/* Título */
 .form-title, .signup-form-title {
     font-size: 1.8rem;
     color: var(--finhero-dark-green);
     margin-bottom: 25px;
 }
 
-/* Inputs */
 .input-field, .signup-input-field, .signup-input-full-width {
     width: 100%;
     padding: 12px 15px;
@@ -275,16 +245,14 @@ body {
     outline: none;
 }
 
-/* Signup Específico */
 .signup-input-row { display: flex; gap: 10px; margin-bottom: 10px; width: 100%; }
 .signup-input-field { flex: 1; margin-bottom: 0; background-color: white; color: #333; }
 .signup-input-full-width { background-color: white; color: #333; }
 
 
-/* Botões */
 .login-button, .signup-button {
     width: 100%;
-    padding: 15px;
+    padding: 20px;
     background-color: var(--finhero-dark-green);
     color: white;
     border: none;
@@ -303,12 +271,10 @@ body {
     box-shadow: 0 8px 20px rgba(40, 167, 69, 0.6);
 }
 
-/* Links */
 .forgot-password, .signup-text { font-size: 0.9rem; color: var(--finhero-text-faded); }
 .forgot-password a, .signup-link { color: var(--finhero-dark-green); text-decoration: none; font-weight: bold; }
 .forgot-password a:hover, .signup-link:hover { text-decoration: underline; }
 
-/* Efeito de Moedas */
 .coin-pattern {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; overflow: hidden; z-index: 0; pointer-events: none;
 }
@@ -327,11 +293,6 @@ body {
 @keyframes coinMove { 0% { transform: translateX(0); } 100% { transform: translateX(-150px); } }
 
 
-/* ========================================================= */
-/* --- 5. ESTILOS DA PÁGINA HOME (DASHBOARD) --- */
-/* ========================================================= */
-
-/* Área de Widgets */
 .dashboard-widgets-area {
     display: grid;
     grid-template-columns: 1fr 1fr 2fr; /* Layout: 1/4 | 1/4 | 1/2 */
@@ -339,7 +300,6 @@ body {
     margin-top: 20px;
 }
 
-/* Estilo Base dos Cards */
 .status-card, .placeholder-card-small, .transactions-list-card {
     background-color: var(--finhero-card-bg);
     padding: 25px;
@@ -357,7 +317,6 @@ body {
     margin-bottom: 15px;
 }
 
-/* Card de Status Financeiro */
 .status-detail {
     display: flex;
     justify-content: space-between;
@@ -370,11 +329,9 @@ body {
 .saldo-value { color: #4CAF50; font-weight: bold; }
 .xp-value { color: var(--finhero-gold); font-weight: bold; }
 
-/* Lista de Transações */
 .transactions-list-card { grid-column: span 2; min-height: 400px; }
 .transaction-list-container { max-height: 300px; overflow-y: auto; padding-right: 10px; }
 
-/* Transaction Card */
 .transaction-card {
     display: flex; justify-content: space-between; align-items: center;
     background-color: var(--finhero-card-bg);
@@ -389,10 +346,6 @@ body {
 .income-color { color: var(--finhero-dark-green); border-left-color: var(--finhero-dark-green); }
 .expense-color { color: var(--finhero-red); border-left-color: var(--finhero-red); }
 
-
-/* ========================================================= */
-/* --- 6. ESTILOS DA PÁGINA ADICIONAR --- */
-/* ========================================================= */
 
 .add-form { background-color: var(--finhero-card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); }
 .form-group { margin-bottom: 20px; }
@@ -416,7 +369,6 @@ body {
     padding-right: 30px;
 }
 
-/* Toggle Button */
 .type-toggle { display: flex; background-color: #1A1A2E; border-radius: 8px; overflow: hidden; }
 .type-button {
     flex: 1; padding: 15px; border: none; cursor: pointer; font-weight: bold; font-size: 1.1rem;
@@ -426,7 +378,6 @@ body {
 .active-income { background-color: var(--finhero-dark-green) !important; color: var(--finhero-text-light) !important; }
 .active-expense { background-color: var(--finhero-red) !important; color: var(--finhero-text-light) !important; }
 
-/* Botão de Envio */
 .add-transaction-button {
     width: 100%; padding: 15px; background-color: var(--finhero-dark-green); color: white; border: none;
     border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-top: 10px;
@@ -434,16 +385,11 @@ body {
 .add-transaction-button:hover { background-color: #238C3B; }
 
 
-/* ========================================================= */
-/* --- 7. ESTILOS DA PÁGINA DUPLA --- */
-/* ========================================================= */
-
 .duo-content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
 .duo-panel { background-color: var(--finhero-card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); min-height: 250px; }
 .duo-panel h3 { color: var(--finhero-dark-green); border-bottom: 1px solid rgba(40, 167, 69, 0.2); padding-bottom: 10px; margin-top: 0; margin-bottom: 20px; font-size: 1.5rem; }
 .duo-panel p { color: var(--finhero-text-faded); }
 
-/* Botões Gerais */
 .primary-button {
     width: 100%; padding: 12px; background-color: var(--finhero-dark-green); color: white; border: none;
     border-radius: 6px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-top: 15px;
@@ -476,10 +422,6 @@ body {
 .partner-status-tag { background-color: var(--finhero-dark-green); color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.8rem; font-weight: bold; }
 
 
-/* ========================================================= */
-/* --- 8. ESTILOS DA PÁGINA PERFIL --- */
-/* ========================================================= */
-
 .profile-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
 .profile-panel { 
     background-color: var(--finhero-card-bg); padding: 30px; border-radius: 12px; 
@@ -491,12 +433,10 @@ body {
 .form-hint { display: block; font-size: 0.85rem; color: var(--finhero-text-faded); margin-top: 5px; }
 .profile-actions { display: flex; gap: 15px; margin-top: 25px; }
 
-/* Painel de Status do Jogo */
 .game-status-panel .status-detail { border-bottom: none; padding: 10px 0; }
 .level-value { font-size: 1.8rem; }
 .divider { border-top: 1px dashed rgba(255, 255, 255, 0.1); margin: 15px 0; }
 
-/* Status Dupla (No Perfil) */
 .duo-status-box { padding: 15px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.2); }
 .duo-status-box.connected { border-left: 5px solid var(--finhero-dark-green); }
 .duo-status-box.none { border-left: 5px solid var(--finhero-red); }
@@ -510,24 +450,18 @@ body {
 .full-width-button { margin-top: 20px; }
 
 
-/* ========================================================= */
-/* --- MEDIA QUERIES (Responsividade) --- */
-/* ========================================================= */
-
 @media (max-width: 1200px) {
-    /* Ajusta o dashboard em telas menores */
     .dashboard-widgets-area {
-        grid-template-columns: 1fr 1fr; /* Volta para 2 colunas */
+        grid-template-columns: 1fr 1fr;
     }
     .transactions-list-card {
-        grid-column: span 2; /* A lista ocupa a largura total inferior */
+        grid-column: span 2;
     }
 }
 
 @media (max-width: 900px) {
-    /* Ajusta Perfil e Dupla para empilhar em telas menores */
     .profile-grid, .duo-content-grid {
-        grid-template-columns: 1fr; /* Coluna única */
+        grid-template-columns: 1fr;
     }
     .profile-panel { 
         min-height: auto; 
@@ -535,16 +469,13 @@ body {
 }
 
 @media (max-width: 768px) {
-    /* Ajusta Sidebar */
     .sidebar-container { width: 100%; height: auto; position: static; box-shadow: none; }
     .main-content { margin-left: 0; width: 100%; padding: 20px; overflow-y: visible; height: auto; }
     .app-layout { flex-direction: column; }
     
-    /* Login/Signup */
-    .login-page, .auth-page { max-width: 100%; padding: 20px; }
+    .login-page, .auth-page { max-width: 100%; padding: 30px; }
     .logo-text, .signup-logo-text { font-size: 2.5rem; }
 
-    /* Adicionar */
     .form-row { flex-direction: column; gap: 0; }
     .form-row .form-group { margin-bottom: 20px; }
 }

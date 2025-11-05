@@ -1,33 +1,24 @@
-// src/pages/dupla.tsx
-
 import React, { useState, FormEvent } from 'react';
-// ⬅️ Importa useLocation e useNavigate para a Sidebar
 import { useLocation, useNavigate } from 'react-router-dom'; 
-import Sidebar from '../components/ui/sidebar.tsx'; // Garante o caminho correto
+import Sidebar from '../components/ui/sidebar.tsx';
 
-// Status da Dupla no App:
 type DuoStatus = 'none' | 'pending' | 'connected';
 
 const Dupla: React.FC = () => {
-    // ⬅️ Inicializa hooks de navegação
     const navigate = useNavigate();
     const location = useLocation(); 
     const currentPath = location.pathname;
     
-    // Configura uma função de logout simulada para a Sidebar
     const handleLogout = () => navigate('/login'); 
 
-    // ⚠️ Estado Fictício: Simula se o usuário já tem uma dupla
     const [duoStatus, setDuoStatus] = useState<DuoStatus>('none'); 
     const [partnerName, setPartnerName] = useState('');
-    const [invitationCode, setInvitationCode] = useState('XYZ-123-ABC'); // Código fictício para exibição
+    const [invitationCode, setInvitationCode] = useState('XYZ-123-ABC');
     const [inputCode, setInputCode] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    // Função fictícia para gerar um novo código
     const handleGenerateCode = () => {
         setIsLoading(true);
-        // 🚨 Simula chamada de API para gerar um novo código
         setTimeout(() => {
             const newCode = Math.random().toString(36).substring(2, 5).toUpperCase() + 
                             '-' + 
@@ -35,13 +26,12 @@ const Dupla: React.FC = () => {
                             '-' +
                             Math.random().toString(36).substring(2, 5).toUpperCase();
             setInvitationCode(newCode);
-            setDuoStatus('pending'); // Mudamos o status para Pendente
+            setDuoStatus('pending');
             setIsLoading(false);
             alert("Novo código gerado! Compartilhe com sua dupla.");
         }, 1500);
     };
 
-    // Função para inserir um código
     const handleJoinDuo = (e: FormEvent) => {
         e.preventDefault();
         if (inputCode.length !== 11 || inputCode.indexOf('-') === -1) {
@@ -50,10 +40,9 @@ const Dupla: React.FC = () => {
         }
 
         setIsLoading(true);
-        // 🚨 Simula chamada de API para verificar e conectar
         setTimeout(() => {
             setIsLoading(false);
-            if (inputCode === 'JOIN-FIN-HERO') { // Código de teste
+            if (inputCode === 'JOIN-FIN-HERO') {
                 setPartnerName("João da Silva");
                 setDuoStatus('connected');
                 alert("Conexão estabelecida com sucesso com João da Silva!");
@@ -64,10 +53,8 @@ const Dupla: React.FC = () => {
         }, 2000);
     };
 
-    // 1. Renderiza quando está conectado (AGORA COM LAYOUT)
     if (duoStatus === 'connected') {
         return (
-            // ⬅️ Estrutura de Layout
             <div className="app-layout"> 
                 <Sidebar onLogout={handleLogout} activePath={currentPath} /> 
                 <main className="main-content">
@@ -78,7 +65,7 @@ const Dupla: React.FC = () => {
                             </h1>
                         </header>
                         <div className="status-box connected-box">
-                            <h2>🎉 Conectado com Sucesso!</h2>
+                            <h2>✓ Conectado com Sucesso!</h2>
                             <p>Você está compartilhando finanças com:</p>
                             <div className="partner-info">
                                 <strong>{partnerName}</strong>
@@ -92,7 +79,6 @@ const Dupla: React.FC = () => {
         );
     }
 
-    // Conteúdo Pendente / Padrão
     const renderPendingState = (
         <div className="status-box pending-box">
             <h2>Aguardando Conexão...</h2>
@@ -120,9 +106,7 @@ const Dupla: React.FC = () => {
         </div>
     );
     
-    // 3. Renderiza a tela principal (status 'none' ou 'pending') (AGORA COM LAYOUT)
     return (
-        // ⬅️ Estrutura de Layout
         <div className="app-layout"> 
             <Sidebar onLogout={handleLogout} activePath={currentPath} /> 
             <main className="main-content">
@@ -136,7 +120,6 @@ const Dupla: React.FC = () => {
                     
                     <div className="duo-content-grid">
                         
-                        {/* ⬅️ LADO ESQUERDO: Gerar Código / Pendente */}
                         <div className="duo-panel">
                             <h3>{duoStatus === 'pending' ? 'Código Ativo' : 'Criar uma Dupla'}</h3>
                             {duoStatus === 'pending' ? (
@@ -155,7 +138,6 @@ const Dupla: React.FC = () => {
                             )}
                         </div>
 
-                        {/* ⬅️ LADO DIREITO: Inserir Código */}
                         <div className="duo-panel">
                             <h3>Entrar em uma Dupla</h3>
                             <form className="join-form" onSubmit={handleJoinDuo}>

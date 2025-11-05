@@ -1,33 +1,27 @@
-// src/pages/perfil.tsx
-
 import React, { useState, FormEvent } from 'react';
-// ⬅️ Importa useLocation e useNavigate para a Sidebar funcionar
 import { useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from '../components/ui/sidebar.tsx'; // Garante o caminho correto
+import Sidebar from '../components/ui/sidebar.tsx';
 
-// Dados fictícios para simular o perfil do usuário
 interface UserProfile {
     name: string;
     email: string;
-    password?: string; // Não exibimos, mas usamos para simular a mudança
+    password?: string;
     currentLevel: number;
     duoPartner: string | null;
 }
 
 const initialProfile: UserProfile = {
     name: 'Guilherme Machado',
-    email: 'guilherme.m@finhero.com',
+    email: 'guilherme@finhero.com',
     currentLevel: 5,
-    duoPartner: 'João da Silva', // Dupla fictícia conectada
+    duoPartner: 'João da Silva',
 };
 
 const Perfil: React.FC = () => {
-    // ⬅️ Inicializa hooks de navegação
     const navigate = useNavigate();
     const location = useLocation(); 
     const currentPath = location.pathname;
     
-    // Configura uma função de logout simulada para a Sidebar
     const handleLogout = () => navigate('/login'); 
 
     const [profile, setProfile] = useState<UserProfile>(initialProfile);
@@ -39,7 +33,6 @@ const Perfil: React.FC = () => {
     const handleSaveProfile = (e: FormEvent) => {
         e.preventDefault();
         
-        // 🚨 Simulação de chamada de API para atualizar perfil
         console.log('Perfil atualizado:', profile);
         
         alert("Perfil atualizado com sucesso!");
@@ -59,17 +52,14 @@ const Perfil: React.FC = () => {
             return;
         }
 
-        // 🚨 Simulação de chamada de API para trocar senha
         console.log('Senha alterada.');
         
         alert("Senha alterada com sucesso!");
-        // Limpa os campos de senha
         setCurrentPassword('');
         setNewPassword('');
         setConfirmNewPassword('');
     };
     
-    // Função para renderizar o painel de status da dupla
     const renderDuoStatus = () => {
         if (profile.duoPartner) {
             return (
@@ -88,7 +78,7 @@ const Perfil: React.FC = () => {
                 <p>Compartilhe as finanças com um parceiro para desbloquear metas conjuntas.</p>
                 <button 
                     className="primary-button small-button" 
-                    onClick={() => navigate('/dupla')} // ⬅️ Usa navigate para ir para a página de Dupla
+                    onClick={() => navigate('/dupla')}
                 >
                     Configurar Dupla
                 </button>
@@ -97,13 +87,10 @@ const Perfil: React.FC = () => {
     };
 
     return (
-        // ⬅️ Envolve com o layout principal
         <div className="app-layout"> 
             
-            {/* ⬅️ Renderiza a Sidebar */}
             <Sidebar onLogout={handleLogout} activePath={currentPath} /> 
             
-            {/* ⬅️ Renderiza o conteúdo da página dentro de <main> */}
             <main className="main-content">
                 <div className="page-container profile-page-container">
                     <header className="page-header">
@@ -115,7 +102,6 @@ const Perfil: React.FC = () => {
 
                     <div className="profile-grid">
                         
-                        {/* 1. Painel de Informações Pessoais */}
                         <div className="profile-panel personal-info-panel">
                             <h3>Informações da Conta</h3>
                             <form onSubmit={handleSaveProfile}>
@@ -136,7 +122,7 @@ const Perfil: React.FC = () => {
                                         type="email"
                                         className="form-input"
                                         value={profile.email}
-                                        disabled // E-mail geralmente não é editável diretamente
+                                        disabled
                                     />
                                     <small className="form-hint">E-mail não pode ser alterado diretamente.</small>
                                 </div>
@@ -160,7 +146,6 @@ const Perfil: React.FC = () => {
                             </form>
                         </div>
                         
-                        {/* 2. Painel de Segurança/Senha */}
                         <div className="profile-panel security-panel">
                             <h3>Segurança e Senha</h3>
                             <form onSubmit={handleChangePassword}>
@@ -200,7 +185,6 @@ const Perfil: React.FC = () => {
                             </form>
                         </div>
 
-                        {/* 3. Painel de Status do Jogo/Dupla */}
                         <div className="profile-panel game-status-panel">
                             <h3>Status do FinHero</h3>
                             <div className="status-detail">

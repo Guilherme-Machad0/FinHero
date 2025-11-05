@@ -1,8 +1,5 @@
-/* src/index.css */
-
 .login-header h1 {
-  /* Usa a fonte Bebas Neue apenas no título */
   font-family: 'Bebas Neue', sans-serif; 
   font-size: 2.5rem;
-  color: var(--color-primary); /* Use sua cor primária, como #18A340 */
+  color: var(--color-primary);
 }

@@ -1,98 +1,241 @@
-// src/pages/login.tsx (ou src/components/Login.tsx)
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { login as loginService, signup as signupService } from '../services/authService';
 
-import React, { useState, FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // Importa Link e 
-import { colors ,layout}from '../../styles/themes.ts'
-
+import '../styles/AuthPage.css';
+import 'boxicons/css/boxicons.min.css';
+import logoDiabinho from '../assets/logo-diabinho-verde.png';
+import logoDiabinhoRed from '../assets/logo-diabinho-vermelho.png';
 
 interface LoginProps {
-    onLogin: () => void; // Função para ser chamada quando o login for bem-sucedido
+  onLogin: () => void;
+  onSignupSuccess?: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [error, setError] = useState<string>('');
-    const navigate = useNavigate(); // Hook para navegação programática
+function Login({ onLogin, onSignupSuccess }: LoginProps) {
+  const [isActive, setIsActive] = useState(false);
+  const navigate = useNavigate();
 
-    const handleSubmit = (event: FormEvent) => {
-        event.preventDefault(); // Previne o recarregamento da página
-        setError(''); // Limpa mensagens de erro anteriores
+  // Estados para login
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
-        // Lógica de autenticação (Exemplo: credenciais fixas)
-        if (email === "teste@finhero.com" && password === "123") {
-            onLogin(); // Chama a função de login bem-sucedido passada via props
-            navigate('/home'); // Redireciona para a página inicial
-        } else {
-            setError("E-mail ou senha incorretos. Tente 'teste@finhero.com' e '123'.");
-        }
-    };
+  // Estados para cadastro
+  const [registerName, setRegisterName] = useState('');
+  const [registerEmail, setRegisterEmail] = useState('');
+  const [registerPassword, setRegisterPassword] = useState('');
 
-    return (
-        // O elemento pai (div com id="login-page") terá os estilos de fundo
-        // e centralização aplicados via CSS global (App.css ou index.css)
-        <div className="login-page"> 
-            
-            {/* Ícones do FinHero - Você pode substituir por imagens reais (assets) */}
-            <div className="logo-section">
-                <img src="/src/assets/finhero_icon_left.png" alt="FinHero Green Mascot" className="mascot-left" /> {/* Exemplo de como usar uma imagem */}
-                <h1 className="logo-text">FINHERO</h1>
-                <img src="/src/assets/finhero_icon_right.png" alt="FinHero Red Mascot" className="mascot-right" /> {/* Exemplo de como usar uma imagem */}
+  // Estados para erros
+  const [loginError, setLoginError] = useState('');
+  const [registerError, setRegisterError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    setIsLoading(true);
+
+    try {
+      const response = await loginService({
+        email: loginEmail,
+        password: loginPassword,
+      });
+
+      // Salvar token se necessário
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+      }
+
+      onLogin();
+      navigate('/home');
+    } catch (error: any) {
+      setLoginError(error.message || 'Erro ao fazer login. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setRegisterError('');
+
+    if (registerPassword.length < 6) {
+      setRegisterError('A senha deve ter pelo menos 6 caracteres.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await signupService({
+        name: registerName,
+        email: registerEmail,
+        password: registerPassword,
+      });
+
+      // Salvar token se necessário
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+      }
+
+      if (onSignupSuccess) {
+        onSignupSuccess();
+      }
+      navigate('/home');
+    } catch (error: any) {
+      setRegisterError(error.message || 'Erro ao cadastrar. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className={`wrapper ${isActive ? 'active' : ''}`}>
+      <span className="rotate-bg"></span>
+      <span className="rotate-bg2"></span>
+      
+      <img
+        src={logoDiabinho}
+        alt="Diabinho Verde"
+        className="login-image"
+      />
+      
+      <img
+        src={logoDiabinhoRed}
+        alt="Diabinho Vermelho"
+        className="register-image"
+      />
+
+      <div className="form-box login">
+        <h2 className="animation" style={{ '--i': 0, '--j': 21 } as React.CSSProperties}>Login</h2>
+        <form onSubmit={handleLoginSubmit}>
+          {loginError && (
+            <div style={{ color: 'red', fontSize: '14px', marginBottom: '10px', textAlign: 'center' }}>
+              {loginError}
             </div>
+          )}
+          <div className="input-box animation" style={{ '--i': 1, '--j': 22 } as React.CSSProperties}>
+            <input 
+              type="email" 
+              required 
+              value={loginEmail}
+              onChange={(e) => setLoginEmail(e.target.value)}
+            />
+            <label>E-mail</label>
+            <i className='bx bxs-user'></i>
+          </div>
+          <div className="input-box animation" style={{ '--i': 2, '--j': 23 } as React.CSSProperties}>
+            <input 
+              type="password" 
+              required 
+              value={loginPassword}
+              onChange={(e) => setLoginPassword(e.target.value)}
+            />
+            <label>Senha</label>
+            <i className='bx bxs-lock-alt'></i>
+          </div>
+          <button 
+            type="submit" 
+            className="animation" 
+            style={{ '--i': 3, '--j': 24 } as React.CSSProperties}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Carregando...' : 'Start'}
+          </button>
+          <div className="linkTxt animation" style={{ '--i': 5, '--j': 25 } as React.CSSProperties}>
+            <p>
+              Não tem conta? <a href="#" onClick={(e) => {
+                e.preventDefault();
+                setIsActive(true);
+                setLoginError('');
+              }}>
+                Cadastre-se
+              </a>
+            </p>
+          </div>
+        </form>
+      </div>
 
-            {/* Mensagens de Boas-vindas */}
-            <p className="slogan">Hora de virar mestres do orçamento!</p>
-            <p className="tagline">Ganhe XP com cada boa decisão.</p>
-
-            {/* Seção de Formulário */}
-            <div className="login-form-section">
-                <h2 className="form-title">Acesse sua conta</h2>
-
-                <form onSubmit={handleSubmit}>
-                    {/* Mensagem de Erro */}
-                    {error && <p className="error-message">{error}</p>}
-
-                    {/* Input de E-mail */}
-                    <input
-                        type="email"
-                        placeholder="E-mail"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="input-field"
-                    />
-
-                    {/* Input de Senha */}
-                    <input
-                        type="password"
-                        placeholder="Senha"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="input-field"
-                    />
-
-                    {/* Link para Esqueceu a Senha */}
-                    <p className="forgot-password">
-                        Esqueceu sua senha? <Link to="/reset-password">Resete aqui</Link>
-                    </p>
-
-                    {/* Botão de Login */}
-                    <button type="submit" className="login-button">
-                        START
-                    </button>
-                </form>
-
-                {/* Link para Cadastro */}
-                <p className="signup-text">
-                    Não tem conta? <Link to="/signup" className="signup-link">Cadastre-se</Link>
-                </p>
+      <div className="form-box register">
+        <h2 className="animation" style={{ '--i': 0, '--j': 17 } as React.CSSProperties}>Cadastro</h2>
+        <form onSubmit={handleRegisterSubmit}>
+          {registerError && (
+            <div style={{ color: 'red', fontSize: '14px', marginBottom: '10px', textAlign: 'center' }}>
+              {registerError}
             </div>
+          )}
+          <div className="input-box animation" style={{ '--i': 1, '--j': 18 } as React.CSSProperties}>
+            <input 
+              type="text" 
+              required 
+              value={registerName}
+              onChange={(e) => setRegisterName(e.target.value)}
+            />
+            <label>Nome</label>
+            <i className='bx bxs-user'></i>
+          </div>
+          <div className="input-box animation" style={{ '--i': 2, '--j': 19 } as React.CSSProperties}>
+            <input 
+              type="email" 
+              required 
+              value={registerEmail}
+              onChange={(e) => setRegisterEmail(e.target.value)}
+            />
+            <label>E-mail</label>
+            <i className='bx bxs-envelope'></i>
+          </div>
+          <div className="input-box animation" style={{ '--i': 3, '--j': 20 } as React.CSSProperties}>
+            <input 
+              type="password" 
+              required 
+              value={registerPassword}
+              onChange={(e) => setRegisterPassword(e.target.value)}
+            />
+            <label>Senha</label>
+            <i className='bx bxs-lock-alt'></i>
+          </div>
+          <button 
+            type="submit" 
+            className="animation" 
+            style={{ '--i': 4, '--j': 21 } as React.CSSProperties}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Carregando...' : 'Start'}
+          </button>
+          <div className="linkTxt animation" style={{ '--i': 5, '--j': 22 } as React.CSSProperties}>
+            <p>
+              Já tem conta? <a href="#" onClick={(e) => {
+                e.preventDefault();
+                setIsActive(false);
+                setRegisterError('');
+              }}>
+                Faça login
+              </a>
+            </p>
+          </div>
+        </form>
+      </div>
 
-            {/* Efeito de Moedas no Rodapé */}
-            <div className="coin-pattern"></div>
-        </div>
-    );
-};
+      <div className="info-text login">
+        <h2 className="animation neon-text-green" style={{ '--i': 1, '--j': 20 } as React.CSSProperties}>
+          Bem-vindo de Volta!
+        </h2>
+        <p className="animation neon-text-green" style={{ '--i': 2, '--j': 21 } as React.CSSProperties}>
+          Hora de virar mestre do orçamento!
+        </p>
+      </div>
+
+      <div className="info-text register">
+        <h2 className="animation neon-text-red" style={{ '--i': 1, '--j': 16 } as React.CSSProperties}>
+          Olá, Herói!
+        </h2>
+        <p className="animation neon-text-red" style={{ '--i': 2, '--j': 17 } as React.CSSProperties}>
+          Entre e comece sua jornada financeira!
+        </p>
+      </div>
+
+    </div>
+  );
+}
 
 export default Login;
